@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" content="width=device-width, initial-scale=1" name="viewport"/>
+    <title>Paste Bin</title>
+</head>
+
+<body style="background: beige">
+<div align="center" style="padding-top: 30px">
+    <img src="http://file.loopy.tech/logo.png" width="320">
+</div>
+
+<div align="center" style="width:70%; margin: auto; padding-top: 30px">
+    <table align="center" border="1" cellpadding="10" cellspacing="0" style="padding-top: 0px">
+        {% if msg%}
+        <tr>
+            <td colspan="2" style="color:red">{{msg}}</td>
+        </tr>
+        {% endif %}
+        {% if url%}
+        <tr>
+            <td>Url:</td>
+            <td><a href="{{url}}">{{url}}</a></td>
+        </tr>
+        {% endif %}
+        {% if content%}
+        <tr>
+            <td>Content:</td>
+            <td>{{content|safe}}</td>
+        </tr>
+        {% endif %}
+        {% if expire%}
+        <tr>
+            <td>Expiration:</td>
+            <td>{{expire}}</td>
+        </tr>
+        {% endif %}
+        <tr>
+            <td colspan="2"><b>Disclaimer</b>: This site is inspired by Ubuntu PasteBin, which intended for use as a
+                short-term exchange of pasted information between parties. All submitted data is considered public
+                information. Submitted data is not guaranteed to be permanent, and may be removed at any time. Please do
+                not set up programs to send data to this site in an automated fashion; it is intended to be used
+                directly by humans. Note that paste expirations are approximate and not guaranteed.
+            </td>
+        </tr>
+
+        <tr>
+            <td colspan="2" align="center">Email to <a href="mailto:peter@mail.loopy.tech">peter@mail.loopy.tech</a> if
+                you
+                meet any problem
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" align="center"><a href="/paste">Go paste something!</a>
+            </td>
+        </tr>
+    </table>
+</div>
+</body>
+
+</html>
