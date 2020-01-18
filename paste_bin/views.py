@@ -10,16 +10,16 @@ app = Flask(__name__)
 app.config["SECRET_KEY"] = "".join(
     random.sample(string.ascii_letters + string.digits, 16)
 )
-app.config['SESSION_PERMANENT'] = False
+app.config["SESSION_PERMANENT"] = False
 root = "http://0.0.0.0:8080"  # "http://paste.loopy.tech"
 
 
 def is_robot():
-    if 'count' in session:
-        session['count'] += 1
+    if "count" in session:
+        session["count"] += 1
     else:
-        session['count'] = 0
-    return session['count'] > 20
+        session["count"] = 0
+    return session["count"] > 20
 
 
 @app.route("/", methods=["GET", "POST"])
@@ -31,7 +31,10 @@ def index():
 def set():
     form = PasteForm()
     if is_robot():
-        return render_template("pastebin.html", msg="Due to frequent operations, you are currently banned from server.")
+        return render_template(
+            "pastebin.html",
+            msg="Due to frequent operations, you are currently banned from server.",
+        )
 
     if form.validate_on_submit():
         if PasteBin.set_record(**form.data):  # succeed
@@ -51,7 +54,10 @@ def set():
 @app.route("/<title>", methods=["GET", "POST"])
 def get(title):
     if is_robot():
-        return render_template("pastebin.html", msg="Due to frequent operations, you are currently banned from server.")
+        return render_template(
+            "pastebin.html",
+            msg="Due to frequent operations, you are currently banned from server.",
+        )
 
     record = PasteBin.get_record(title)
     if record is None:
@@ -67,7 +73,10 @@ def get(title):
 @app.route("/info/<title>", methods=["GET", "POST"])
 def info(title):
     if is_robot():
-        return render_template("pastebin.html", msg="Due to frequent operations, you are currently banned from server.")
+        return render_template(
+            "pastebin.html",
+            msg="Due to frequent operations, you are currently banned from server.",
+        )
 
     record = PasteBin.get_record(title)
     if record is None:

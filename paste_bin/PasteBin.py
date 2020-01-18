@@ -3,14 +3,26 @@ import time
 
 class Record:
     def __init__(self, record_title, record_type, record_expire, record_content):
+        """
+
+        :param record_title: title of record
+        :param record_type: "url" or "text"
+        :param record_expire: see self.expire
+        :param record_content:
+        """
         self.title = record_title
         self.type = record_type
         self.expire = record_expire
         self.content = (
-            record_content
-            if "://" in record_content or record_type != "url"
-            else "http://" + record_content
-        ).replace("<", "&lt;").replace(">", "&gt;").replace("\n", "<br/>")
+            (
+                record_content
+                if "://" in record_content or record_type != "url"
+                else "http://" + record_content
+            )
+            .replace("<", "&lt;")
+            .replace(">", "&gt;")
+            .replace("\n", "<br/>")
+        )
 
     @property
     def expire(self):
@@ -36,9 +48,9 @@ class Record:
     def valid(self):
         expire, expire_type = self.expire
         return (
-                expire_type == 0
-                or (expire_type == 1 and expire >= time.time())
-                or (expire_type == 2 and expire > 0)
+            expire_type == 0
+            or (expire_type == 1 and expire >= time.time())
+            or (expire_type == 2 and expire > -1)
         )
 
     @property
@@ -51,7 +63,10 @@ class Record:
                 time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(expire))
             )
         elif expire_type == 2:
-            return "it will expired after {} visits".format(expire)
+            if expire == 0:
+                return "it has expired"
+            else:
+                return "it will expired after {} visits".format(expire)
 
     def visit(self):
         _, expire_type = self.expire
@@ -78,7 +93,7 @@ class PasteBin:
 
     @classmethod
     def set_record(
-            cls, record_title, record_type, record_expire, record_content, **arg
+        cls, record_title, record_type, record_expire, record_content, **arg
     ):
         if not cls.check_title(record_title):
             return False
